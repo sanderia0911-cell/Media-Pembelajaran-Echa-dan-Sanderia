@@ -1,0 +1,716 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Media Pembelajaran Hukum Lavoisier</title>
+<style>
+:root{--bg:#f4f7fa;--card:#fff;--text:#1b2733;--mut:#5c6b7a;--line:#dbe3eb;--pri:#1f7a8c;--prid:#145866;--soft:#e5f2f5;--ok:#1f7a45;--okbg:#e4f4ea;--warn:#a4400a;--warnbg:#fdeee3;--padat-bg:#ece6dd;--padat-t:#5a4a36;--cair-bg:#dbeaf8;--cair-t:#1b4c78;--gas-bg:#eee5f9;--gas-t:#573a87;--mark:#fff1b8}
+@media (prefers-color-scheme:dark){:root{--bg:#0f151c;--card:#17202a;--text:#e7edf3;--mut:#9fb0c0;--line:#2a3846;--pri:#4fb3c6;--prid:#86d3e2;--soft:#1a2e36;--ok:#6fd49a;--okbg:#16301f;--warn:#ffb084;--warnbg:#3a2415;--padat-bg:#3a342b;--padat-t:#e3d6c1;--cair-bg:#16314a;--cair-t:#a9d3f5;--gas-bg:#2d2142;--gas-t:#d3bdf5;--mark:#4a4113}}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+header{background:linear-gradient(135deg,#145866,#1f7a8c 65%,#2f9bb0);color:#fff;padding:34px 18px 28px;text-align:center}
+header h1{margin:0 0 6px;font-size:clamp(1.6rem,6vw,2.3rem)}
+header p{margin:0;opacity:.92;font-size:.95rem}
+main{max-width:820px;margin:0 auto;padding:6px 14px 50px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-top:16px}
+h2{margin:0 0 10px;font-size:1.25rem;color:var(--prid)}
+h3{margin:0 0 6px;font-size:1.05rem}
+h4{margin:0 0 6px;font-size:.98rem;color:var(--prid)}
+p{margin:0 0 10px}
+.small{font-size:.86rem;color:var(--mut)}
+mark{background:var(--mark);color:var(--text);padding:0 3px;border-radius:3px}
+label{display:block;font-weight:600;font-size:.9rem;margin:10px 0 4px}
+input,select,textarea{font:inherit;width:100%;padding:9px 11px;border-radius:9px;border:1px solid var(--line);background:var(--bg);color:var(--text)}
+select{width:auto;min-width:110px}
+textarea{resize:vertical}
+.btn{font:inherit;font-weight:600;background:var(--pri);color:#fff;border:0;border-radius:9px;padding:10px 16px;cursor:pointer;margin:8px 8px 0 0}
+.btn:hover{background:var(--prid)}
+.btn.sec{background:transparent;color:var(--pri);border:1px solid var(--pri)}
+.err{color:var(--warn);font-size:.88rem;min-height:1px;margin-top:6px}
+.fb{margin-top:10px;padding:11px 13px;border-radius:10px;font-size:.95rem}
+.fb.ok{background:var(--okbg);color:var(--ok)}
+.fb.warn{background:var(--warnbg);color:var(--warn)}
+.note{background:var(--soft);border-radius:10px;padding:10px 12px;font-size:.92rem;margin:8px 0}
+.sapa{background:var(--soft);border-radius:12px;padding:10px 14px;margin-top:16px;font-size:.92rem}
+.chip{display:inline-block;padding:1px 9px;border-radius:999px;font-size:.78rem;font-weight:600}
+.chip.padat{background:var(--padat-bg);color:var(--padat-t)}
+.chip.cair{background:var(--cair-bg);color:var(--cair-t)}
+.chip.gas{background:var(--gas-bg);color:var(--gas-t)}
+.bottle-wrap{display:flex;flex-direction:column;align-items:center;margin:6px 0}
+  .pour-area{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;width:100%;margin:8px 0 4px}
+  #waterCup{width:105px;max-width:32%;touch-action:none;cursor:grab;user-select:none; -webkit-user-select:none}
+  #waterCup:active{cursor:grabbing}
+  #waterCup .cupwater{fill:#4f9fd0;opacity:.75}
+  #waterCup.dragging,#tabletDrag.dragging{filter:drop-shadow(0 5px 5px #0003)}
+  #tabletDrag{width:72px;height:64px;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none;overflow:visible}
+  #tabletDrag:active{cursor:grabbing}
+  #tabletDrag .tablet-chip{fill:#f4f1ea;stroke:var(--mut);stroke-width:2}
+  #pour-hint{font-size:.88rem;color:var(--mut);max-width:180px}
+  #pourStream{stroke:#4f9fd0;stroke-width:5;stroke-linecap:round;opacity:0;pointer-events:none}
+  #bottleSvg.pouring #pourStream{opacity:.85;stroke-dasharray:8 6;animation:flow .35s linear infinite}
+  @keyframes flow{to{stroke-dashoffset:-14}}
+.stage{position:relative;width:100%;max-width:320px;height:230px;margin:6px auto}
+#balSvg{position:absolute;right:0;bottom:0;width:62%;height:auto}
+#bottleSvg{position:absolute;left:0;bottom:0;width:34%;height:auto;overflow:visible;z-index:2;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
+#bottleSvg.dragging{filter:drop-shadow(0 5px 5px #0003);cursor:grabbing}
+.glass{fill:rgba(170,205,222,.22);stroke:var(--mut);stroke-width:2}
+.base{fill:var(--mut);opacity:.5}
+.waterfill{fill:#4f9fd0;opacity:.6;transform-box:fill-box;transform-origin:bottom;transform:scaleY(0);transition:transform .9s ease}
+#cap{transition:transform .7s ease;transform-box:fill-box;transform-origin:center}
+#cap rect{fill:#111}
+#bottleSvg.capopen #cap{transform:translate(52px,-14px) rotate(20deg)}
+#tablet{fill:#f4f1ea;stroke:var(--mut);stroke-width:1.5;opacity:0}
+#tablet.wet{animation:fallWet 1s ease-in forwards,melt 4s 1s forwards}
+#tablet.dry{animation:fallDry 1s ease-in forwards}
+#tablet.melt{opacity:1;transform:translateY(118px);animation:melt 3s forwards}
+@keyframes fallWet{from{opacity:1;transform:translateY(0)}to{opacity:1;transform:translateY(96px)}}
+@keyframes fallDry{from{opacity:1;transform:translateY(0)}to{opacity:1;transform:translateY(118px)}}
+@keyframes melt{from{opacity:1}to{opacity:0}}
+.bub{fill:rgba(255,255,255,.75);stroke:#2d7da8;stroke-width:1;opacity:0}
+#bottleSvg.react .bub{animation:rise 2.2s infinite ease-in}
+@keyframes rise{0%{transform:translateY(0);opacity:0}15%{opacity:1}100%{transform:translateY(-55px);opacity:0}}
+.puff{fill:var(--gas-bg);stroke:var(--gas-t);stroke-width:1;opacity:0}
+#bottleSvg.react.capopen .puff,#bottleSvg.venting .puff{animation:puff 2s infinite ease-out}
+@keyframes puff{0%{transform:translateY(0);opacity:0}20%{opacity:.9}100%{transform:translateY(-70px);opacity:0}}
+#gaslbl{fill:var(--gas-t);font-size:11px;font-weight:700;opacity:0;transition:opacity .5s}
+#bottleSvg.gasin #gaslbl{opacity:1}
+.st{display:inline-block;background:var(--soft);color:var(--prid);padding:2px 10px;border-radius:999px;font-size:.8rem;font-weight:600;margin:0 6px 6px 0}
+.digital{background:#10211f;color:#6ff0c4;font-family:ui-monospace,Consolas,monospace;font-size:1.5rem;padding:4px 18px;border-radius:8px;margin-top:4px;letter-spacing:1px}
+.btnrow{margin:4px 0 6px}
+.q{font-weight:700;margin:12px 0 6px}
+.formula{background:var(--soft);border-radius:12px;padding:14px;text-align:center;margin:8px 0}
+.formula .big{font-size:1.25rem;font-weight:700;color:var(--prid)}
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.92rem}
+th,td{border:1px solid var(--line);padding:7px 8px;text-align:left}
+th{background:var(--soft)}
+.tabs{display:flex;gap:6px;overflow-x:auto;margin:8px 0 12px}
+.tab{font:inherit;font-size:.88rem;font-weight:600;white-space:nowrap;padding:8px 12px;border-radius:9px;border:1px solid var(--line);background:var(--card);color:var(--text);cursor:pointer}
+.tab.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.step{border-top:1px dashed var(--line);padding-top:12px;margin-top:12px}
+.scales{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:8px 0}
+@media(max-width:430px){.scales{grid-template-columns:1fr}}
+.scale{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center}
+.stitle{font-weight:700;font-size:.9rem;margin-bottom:6px}
+.pan{min-height:92px;display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-items:flex-end;padding-bottom:4px;border-bottom:5px solid var(--mut)}
+.blk{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:62px;padding:6px 8px;font-size:.8rem;line-height:1.25}
+.blk b{font-size:.9rem}
+.blk small{opacity:.8}
+.blk.padat{background:var(--padat-bg);color:var(--padat-t);border-radius:4px}
+.blk.cair{background:var(--cair-bg);color:var(--cair-t);border-radius:4px 4px 16px 16px}
+.blk.gas{background:var(--gas-bg);color:var(--gas-t);border-radius:50%;border:2px dashed var(--gas-t);min-width:72px;min-height:72px}
+.blk.unk{background:transparent;border:2px dashed var(--mut);color:var(--mut);border-radius:8px}
+.digi{display:inline-block;margin:8px 0 6px;background:#10211f;color:#6ff0c4;font-family:ui-monospace,Consolas,monospace;padding:2px 12px;border-radius:6px}
+.cmp{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.opt{font:inherit;font-size:.9rem;padding:8px 12px;border-radius:9px;border:1px solid var(--line);background:var(--card);color:var(--text);cursor:pointer}
+.opt.on{border-color:var(--pri);background:var(--soft);color:var(--prid);font-weight:700}
+.sides{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:8px 0}
+.side{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:8px;text-align:center}
+.side .pan{border-bottom:0;min-height:40px}
+.wts{display:flex;flex-wrap:wrap;gap:6px}
+.wts .opt{padding:7px 11px}
+.prog{font-size:.85rem;color:var(--mut);margin-bottom:4px}
+footer{text-align:center;color:var(--mut);font-size:.82rem;padding:18px}
+
+/* Navigasi materi per slide */
+#slide-nav{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:14px 0 4px;position:sticky;top:4px;z-index:5;box-shadow:0 3px 12px #0000000c}
+#slide-count{font-size:.9rem;font-weight:700;color:var(--prid);text-align:center;flex:1;min-width:100px}
+.slide-card{min-height:55vh}
+.lab-stage{position:relative;width:100%;max-width:320px;height:210px;margin:6px auto}
+.lab-bal{position:absolute;right:0;bottom:0;width:62%;height:auto}
+.lab-fl{position:absolute;left:0;bottom:0;width:34%;height:auto;overflow:visible;z-index:2;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
+.lab-fl.dragging{filter:drop-shadow(0 5px 5px #0003);cursor:grabbing}
+.lab-fl g[id$="cap"]{transition:transform .6s;transform-box:fill-box;transform-origin:center}
+.ing{cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
+.ing.used{opacity:.35;pointer-events:none}
+.ing.dragging{position:relative;z-index:5;box-shadow:0 5px 8px #0003}
+.balance-art{width:100%;max-width:230px;margin:4px auto 8px;display:block}
+.balance-beam{stroke:var(--prid);stroke-width:6;stroke-linecap:round}
+.flask-icon{fill:var(--cair-bg);stroke:var(--prid);stroke-width:2}
+@media(max-width:430px){#slide-nav .btn{padding:8px 10px;margin:0}}
+
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Hukum Lavoisier</h1>
+  <p>Media pembelajaran interaktif · Kimia Fase E (Kelas X)</p>
+</header>
+
+<main>
+
+<section class="card" id="cp">
+  <h2>Capaian Pembelajaran</h2>
+  <p>Peserta didik mampu mengamati, menyelidiki, dan menjelaskan fenomena sesuai kaidah kerja ilmiah dalam menjelaskan konsep kimia dalam kehidupan sehari-hari; menerapkan konsep kimia dalam pengelolaan lingkungan termasuk menjelaskan fenomena pemanasan global; <mark>menuliskan reaksi kimia dan menerapkan hukum-hukum dasar kimia</mark>; memahami struktur atom dan aplikasinya dalam nanoteknologi.</p>
+  <p class="small">Bagian yang ditandai berkaitan dengan materi Hukum Lavoisier (Hukum Kekekalan Massa).</p>
+</section>
+
+<section class="card" id="tp">
+  <h2>Tujuan Pembelajaran</h2>
+  <ol style="margin:0;padding-left:20px">
+    <li>Peserta didik mampu menyebutkan dan menjelaskan bunyi Hukum Lavoisier serta alasan massa zat (padat, cair, dan gas) tetap sama pada reaksi kimia dalam sistem tertutup.</li>
+    <li>Peserta didik mampu menerapkan dan menganalisis data massa reaktan dan produk pada simulasi neraca untuk menyimpulkan bahwa massa sebelum dan sesudah reaksi sama.</li>
+  </ol>
+</section>
+
+<section class="card" id="identitas">
+  <h2>Identitas Siswa</h2>
+  <label for="in-nama">Nama</label>
+  <input id="in-nama" autocomplete="off" placeholder="Nama lengkap">
+  <label for="in-kelas">Kelas</label>
+  <input id="in-kelas" autocomplete="off" placeholder="Contoh: X-3">
+  <label for="in-absen">No. absen</label>
+  <input id="in-absen" inputmode="numeric" autocomplete="off" placeholder="Contoh: 12">
+  <label for="in-mapel">Mata pelajaran</label>
+  <input id="in-mapel" value="Kimia" autocomplete="off">
+  <div class="err" id="id-err"></div>
+  <button class="btn" id="btn-mulai">Mulai belajar</button>
+</section>
+
+<div id="isi" hidden>
+
+<div class="sapa" id="sapa"></div>
+<div id="slide-nav" aria-label="Navigasi slide"><button class="btn sec" id="slide-prev" type="button">← Sebelumnya</button><div id="slide-count">Slide 1</div><button class="btn" id="slide-next" type="button">Berikutnya →</button></div>
+
+<section class="card" id="pemantik">
+  <h2>Pertanyaan Pemantik</h2>
+  <p>Seret Erlenmeyer ke atas neraca, buka tutupnya, lalu tuangkan air dan masukkan tablet. Tutup kembali Erlenmeyer sebelum reaksi berlangsung dan amati massa total pada layar neraca.</p>
+  <div class="stage" id="stage">
+    <svg id="balSvg" viewBox="0 0 210 135" role="img" aria-label="Neraca digital"></svg>
+    <svg id="bottleSvg" viewBox="0 0 120 150" role="img" aria-label="Erlenmeyer bertutup hitam yang bisa diseret ke atas neraca" tabindex="0">
+      <defs><clipPath id="bclip"><path d="M50 30H70V68L108 134Q114 148 100 148H20Q6 148 12 134L50 68Z"/></clipPath><clipPath id="wclip2"><rect id="wrect" x="0" y="148" width="120" height="0"/></clipPath></defs>
+      <path id="pourStream" d="M60 -20 Q60 0 60 30" fill="none"/>
+      <g clip-path="url(#bclip)"><rect id="wfill" class="waterfill" x="0" y="78" width="120" height="70"/></g>
+      <path class="glass" d="M50 30H70V68L108 134Q114 148 100 148H20Q6 148 12 134L50 68Z"/>
+      <g id="bubs" clip-path="url(#wclip2)">
+        <circle class="bub" cx="30" cy="140" r="4" style="animation-delay:0s"/>
+        <circle class="bub" cx="45" cy="144" r="3" style="animation-delay:.4s"/>
+        <circle class="bub" cx="60" cy="138" r="5" style="animation-delay:.8s"/>
+        <circle class="bub" cx="75" cy="143" r="3" style="animation-delay:1.2s"/>
+        <circle class="bub" cx="88" cy="141" r="4" style="animation-delay:1.6s"/>
+      </g>
+      <g id="puffs">
+        <circle class="puff" cx="55" cy="80" r="5" style="animation-delay:0s"/>
+        <circle class="puff" cx="65" cy="80" r="4" style="animation-delay:.7s"/>
+        <circle class="puff" cx="60" cy="80" r="6" style="animation-delay:1.3s"/>
+      </g>
+      <ellipse id="tablet" cx="60" cy="8" rx="9" ry="4.5"/>
+      <text id="gaslbl" x="60" y="104" text-anchor="middle">CO₂ tertahan</text>
+      <g id="cap"><rect x="46" y="18" width="28" height="13" rx="3"/></g>
+    </svg>
+  </div>
+  <div class="pour-area">
+    <svg id="waterCup" viewBox="0 0 120 100" role="img" aria-label="Gelas air yang bisa diseret untuk menuangkan air">
+      <path d="M20 18 L100 18 L90 82 Q88 90 80 90 L40 90 Q32 90 30 82 Z" fill="rgba(170,205,222,.22)" stroke="currentColor" stroke-width="2.5"/>
+      <path class="cupwater" d="M25 45 L95 45 L88 80 Q86 85 80 85 L40 85 Q35 85 33 80 Z"/>
+      <path d="M20 18 L100 18" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+      <text x="60" y="68" text-anchor="middle" font-size="12" font-weight="700" fill="#174d73">AIR</text>
+    </svg>
+    <svg id="tabletDrag" viewBox="0 0 80 64" role="img" aria-label="Tablet yang bisa diseret ke dalam Erlenmeyer" tabindex="0">
+      <ellipse class="tablet-chip" cx="40" cy="30" rx="23" ry="12" transform="rotate(-25 40 30)"/>
+      <path d="M29 39 L51 21" stroke="#b8b0a4" stroke-width="1.5"/>
+      <text x="40" y="57" text-anchor="middle" font-size="10" fill="currentColor">TABLET</text>
+    </svg>
+    <div id="pour-hint">Seret Erlenmeyer ke neraca. Buka tutupnya, seret gelas untuk menuangkan air, lalu seret tablet ke mulut Erlenmeyer.</div>
+  </div>
+  <div id="bt-state"></div>
+  <div class="note" id="bt-status"></div>
+  <div class="btnrow">
+    <button class="btn" id="bt-cap">Buka tutup Erlenmeyer</button>
+    <button class="btn sec" id="bt-reset">Ulangi simulasi</button>
+  </div>
+  <div class="note" id="bt-log" hidden></div>
+  <div id="bt-q" hidden>
+    <p class="q">Mengapa gelembung gas yang terbentuk tidak membuat massa total berkurang di Erlenmeyer tertutup?</p>
+    <textarea id="bt-ans" rows="4" placeholder="Tulis jawabanmu di sini..."></textarea>
+    <div class="err" id="bt-err"></div>
+    <button class="btn" id="bt-check">Kirim jawaban</button>
+    <div class="fb" id="bt-fb" hidden></div>
+  </div>
+</section>
+
+<section class="card" id="rumus">
+  <h2>Rumus Hukum Lavoisier</h2>
+  <p>Dalam reaksi kimia, zat yang ada sebelum reaksi disebut <b>reaktan</b>, dan zat yang terbentuk disebut <b>produk</b>.</p>
+  <div class="formula">
+    <div class="big">Massa Reaktan = Massa Produk</div>
+    <div style="margin-top:6px">Untuk reaksi A + B → AB: <b>m A + m B = m AB</b></div>
+  </div>
+  <p>Hukum ini berlaku untuk semua senyawa dan semua wujud zat. Massa zat padat, cair, maupun gas sama-sama ikut dihitung selama semua zat berada dalam sistem tertutup.</p>
+</section>
+
+<section class="card" id="wujud-zat">
+  <h2>Wujud Zat dalam Hukum Lavoisier</h2>
+  <p>Dalam sistem tertutup, massa semua zat tetap dihitung, baik zat berwujud padat, cair, maupun gas.</p>
+  <div class="tw"><table>
+    <tr><th>Wujud</th><th>Contoh</th><th>Ikut ditimbang?</th></tr>
+    <tr><td><span class="chip padat">padat</span></td><td>Besi, belerang</td><td>Ya</td></tr>
+    <tr><td><span class="chip cair">cair</span></td><td>Air, hidrogen peroksida</td><td>Ya</td></tr>
+    <tr><td><span class="chip gas">gas</span></td><td>Oksigen, karbon dioksida</td><td>Ya, karena tertahan di wadah tertutup</td></tr>
+  </table></div>
+</section>
+
+<section class="card" id="simulasi">
+  <h2>Simulasi Neraca</h2>
+  <p class="small">Selesaikan tiga langkah pada setiap simulasi: cocokkan reaktan dan produk, baca neraca sebelum dan sesudah, lalu bandingkan massanya.</p>
+  <div class="tabs" id="simtabs"></div>
+  <div id="simpanels"></div>
+  <div class="fb ok" id="sim-done" hidden></div>
+</section>
+
+<section class="card" id="game">
+  <h2>Game Neraca</h2>
+  <p class="small">Samakan angka di layar kedua neraca dengan menambah zat ke Erlenmeyer yang bertanda tanya. Ingat: massa reaktan = massa produk.</p>
+  <div class="prog" id="g-prog"></div>
+  <p id="g-ket"></p>
+  <div class="sides">
+    <div class="side"><div class="stitle">Sisi kiri · Reaktan</div><div id="g-L"></div></div>
+    <div class="side"><div class="stitle">Sisi kanan · Produk</div><div id="g-R"></div></div>
+  </div>
+  <div class="note" id="g-add"></div>
+  <div class="wts" id="g-wts"></div>
+  <div style="margin-top:6px">
+    <button class="btn sec" id="g-undo">Hapus tambahan terakhir</button>
+    <button class="btn sec" id="g-clear">Kosongkan</button>
+  </div>
+  <div class="err" id="g-err"></div>
+  <button class="btn" id="g-check">Periksa neraca</button>
+  <button class="btn" id="g-next" hidden>Level berikutnya</button>
+  <div class="fb" id="g-fb" hidden></div>
+</section>
+
+</div>
+
+</main>
+<footer>Media pembelajaran kimia · Hukum Kekekalan Massa (Lavoisier)</footer>
+
+<script>
+(function(){
+var $=function(id){return document.getElementById(id);};
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function f1(n){return (Math.round(n*10)/10).toFixed(1).replace('.',',');}
+function fi(n){return String(Math.round(n*10)/10).replace('.',',');}
+function nm(){var v=($('in-nama').value||'').trim();return esc(v||'Siswa');}
+function say(el,html,cls){el.hidden=false;el.className='fb '+cls;el.innerHTML=html;}
+function chip(w){return '<span class="chip '+w+'">'+w+'</span>';}
+
+$('btn-mulai').onclick=function(){
+  var n=$('in-nama').value.trim(),k=$('in-kelas').value.trim(),a=$('in-absen').value.trim(),m=$('in-mapel').value.trim();
+  if(!n||!k||!a||!m){$('id-err').textContent='Lengkapi nama, kelas, nomor absen, dan mata pelajaran dulu.';return;}
+  $('id-err').textContent='';
+  $('sapa').innerHTML='Halo, <b>'+esc(n)+'</b> · Kelas '+esc(k)+' · No. absen '+esc(a)+' · '+esc(m);
+  $('isi').hidden=false;
+  if($('isi').scrollIntoView){$('isi').scrollIntoView({behavior:'smooth'});}
+};
+
+/* ===== Pertanyaan pemantik: Erlenmeyer (satuan massa: 0,1 g) ===== */
+var BASE=450,TABM=50,POUR=250,MAXW=1000,MAXT=3,GASPT=15;
+var INIT_MSG='Erlenmeyer kosong dan bertutup. Letakkan di atas neraca, buka tutup untuk memasukkan air dan tablet, lalu tutup lagi agar reaksi berlangsung dalam sistem tertutup.';
+var bt;
+function btNew(){return {onPan:false,open:false,water:0,tabs:0,pend:0,gasRem:0,gasIn:0,lost:0,react:false,before:null,qOpen:false,msg:INIT_MSG};}
+bt=btNew();
+function btMass(){return BASE+bt.water+bt.tabs*TABM-bt.lost;}
+function btTablet(cls){var t=$('tablet');t.setAttribute('class','');void t.getBoundingClientRect();t.setAttribute('class',cls);}
+function btRender(){
+  var s=$('bottleSvg'),h=bt.water/MAXW*70;
+  s.setAttribute('class',[bt.open?'capopen':'',bt.react?'react':'',(!bt.open&&bt.gasIn>0)?'gasin':'',(bt.open&&bt.gasIn>0)?'venting':''].join(' ').trim());
+  $('bt-read').textContent=bt.onPan?f1(btMass()/10):f1(0);
+  $('wrect').setAttribute('y',148-h);$('wrect').setAttribute('height',h);
+  $('wfill').style.transform='scaleY('+(bt.water/MAXW)+')';
+  $('bt-cap').textContent=bt.open?'Tutup Erlenmeyer':'Buka tutup Erlenmeyer';
+  $('tabletDrag').style.opacity=bt.tabs>=MAXT?'0.35':'1';
+  $('tabletDrag').style.pointerEvents=bt.tabs>=MAXT?'none':'auto';
+  $('bt-state').innerHTML='<span class="st">Tutup: '+(bt.open?'terbuka':'tertutup')+'</span><span class="st">Air: '+fi(bt.water/10)+' g</span><span class="st">Tablet: '+bt.tabs+'</span>'+(bt.gasIn>0?'<span class="st">CO₂ di dalam Erlenmeyer: '+fi(bt.gasIn/10)+' g</span>':'');
+  $('bt-status').textContent=bt.msg;
+  if(bt.before!==null){$('bt-log').hidden=false;$('bt-log').innerHTML='Massa saat tablet mulai bereaksi: <b>'+f1(bt.before/10)+' g</b> · Massa sekarang: <b>'+f1(btMass()/10)+' g</b>';}
+  else{$('bt-log').hidden=true;}
+  $('bt-q').hidden=!bt.qOpen;
+}
+function btSay(m){bt.msg=m;btRender();}
+function btActivate(){
+  if(!bt.open&&bt.water>0&&bt.pend>0){
+    bt.before=btMass();bt.gasRem+=bt.pend*GASPT;bt.pend=0;bt.react=true;
+    return true;
+  }
+  return false;
+}
+$('bt-cap').onclick=function(){
+  if(bt.react||bt.gasIn>0){btSay('Reaksi sedang atau sudah berlangsung. Erlenmeyer tetap tertutup agar gas tidak keluar dan massa total tetap terukur.');return;}
+  bt.open=!bt.open;
+  if(bt.open){btSay('Tutup dibuka untuk memasukkan air dan tablet. Setelah selesai, tutup Erlenmeyer sebelum reaksi berlangsung.');}
+  else{
+    if(btActivate()){btSay('Erlenmeyer tertutup. Reaksi dimulai dan gas CO₂ tertahan di dalam Erlenmeyer. Amati massa total.');}
+    else{btSay('Erlenmeyer ditutup. Jika air dan tablet sudah ada di dalam Erlenmeyer, reaksi akan dimulai dalam sistem tertutup.');}
+  }
+};
+/* Menuangkan air secara langsung: seret gelas ke mulut Erlenmeyer dan tahan. */
+var cup=$('waterCup'), pouring=false, pourTimer=null, pointerId=null;
+function cupOverBottle(){
+  var c=cup.getBoundingClientRect(), b=$('bottleSvg').getBoundingClientRect();
+  var cx=c.left+c.width/2, cy=c.top+c.height*0.25;
+  return cx>b.left+b.width*.28 && cx<b.left+b.width*.72 && cy>b.top && cy<b.top+b.height*.43;
+}
+function pourOneStep(){
+  if(!pouring) return;
+  if(!bt.open){bt.msg='Buka tutup Erlenmeyer untuk memasukkan air, lalu tutup kembali sebelum reaksi berlangsung.';btRender();stopPour();return;}
+  if(!cupOverBottle()) return;
+  if(bt.water>=MAXW){bt.msg='Erlenmeyer sudah berisi air 100 g.';btRender();stopPour();return;}
+  bt.water=Math.min(MAXW,bt.water+10);
+  var dry=$('tablet').getAttribute('class')==='dry';
+  var started=btActivate();
+  if(started&&dry){$('tablet').setAttribute('class','melt');}
+  $('bottleSvg').classList.add('pouring');
+  $('pour-hint').textContent='Air sedang dituangkan… geser gelas menjauh untuk berhenti.';
+  bt.msg='Kamu sedang menuangkan air. Permukaan air di dalam Erlenmeyer naik.';
+  btRender();
+}
+function stopPour(ended){
+  pouring=false; if(pourTimer){clearInterval(pourTimer);pourTimer=null;}
+  $('bottleSvg').classList.remove('pouring');
+  $('pour-hint').textContent='Seret Erlenmeyer ke neraca. Buka tutupnya, seret gelas untuk menuangkan air, lalu seret tablet ke mulut Erlenmeyer.';
+  if(ended){cup.classList.remove('dragging');cup.style.transform='';}
+}
+cup.addEventListener('pointerdown',function(e){
+  e.preventDefault();
+  if(bt.water>=MAXW)return;
+  pointerId=e.pointerId; cup.setPointerCapture(pointerId); cup.classList.add('dragging');
+  cup.dataset.startX=String(e.clientX); cup.dataset.startY=String(e.clientY);
+  cup.dataset.dx='0'; cup.dataset.dy='0';
+});
+cup.addEventListener('pointermove',function(e){
+  if(pointerId!==e.pointerId || !cup.classList.contains('dragging'))return;
+  var dx=e.clientX-Number(cup.dataset.startX),dy=e.clientY-Number(cup.dataset.startY);
+  cup.dataset.dx=String(dx);cup.dataset.dy=String(dy);
+  cup.style.transform='translate('+dx+'px,'+dy+'px) rotate(-18deg)';
+  if(cupOverBottle()&&!pouring){pouring=true;pourOneStep();pourTimer=setInterval(pourOneStep,180);}
+  else if(!cupOverBottle()&&pouring){stopPour();}
+});
+['pointerup','pointercancel','lostpointercapture'].forEach(function(ev){cup.addEventListener(ev,function(e){if(pointerId===null)return;pointerId=null;stopPour(true);});});
+
+/* Siswa memasukkan tablet dengan menyeretnya ke mulut Erlenmeyer. */
+var tabletDrag=$('tabletDrag'), tabletPointer=null, tabletStartX=0, tabletStartY=0;
+function tabletOverBottle(){
+  var t=tabletDrag.getBoundingClientRect(), b=$('bottleSvg').getBoundingClientRect();
+  var cx=t.left+t.width/2, cy=t.top+t.height*.28;
+  return cx>b.left+b.width*.30 && cx<b.left+b.width*.70 && cy>b.top && cy<b.top+b.height*.30;
+}
+function insertTablet(){
+  if(!bt.open){btSay('Buka tutup Erlenmeyer untuk memasukkan tablet. Setelah itu tutup Erlenmeyer agar reaksi berlangsung dalam sistem tertutup.');return;}
+  if(bt.tabs>=MAXT){btSay('Cukup tiga tablet untuk percobaan ini.');return;}
+  bt.tabs++;bt.pend++;
+  btTablet(bt.water>0?'wet':'dry');
+  var started=btActivate();
+  btSay(started?'Tablet berhasil dimasukkan. Tutup Erlenmeyer sebelum reaksi berlangsung.':'Tablet berhasil dimasukkan. Tutup Erlenmeyer setelah air dan tablet tersedia; reaksi berlangsung dalam sistem tertutup.');
+}
+tabletDrag.addEventListener('pointerdown',function(e){e.preventDefault();tabletPointer=e.pointerId;tabletStartX=e.clientX;tabletStartY=e.clientY;tabletDrag.setPointerCapture(e.pointerId);tabletDrag.classList.add('dragging');});
+tabletDrag.addEventListener('pointermove',function(e){if(tabletPointer!==e.pointerId)return;var dx=e.clientX-tabletStartX,dy=e.clientY-tabletStartY;tabletDrag.style.transform='translate('+dx+'px,'+dy+'px) rotate(-20deg)';});
+['pointerup','pointercancel','lostpointercapture'].forEach(function(ev){tabletDrag.addEventListener(ev,function(e){if(tabletPointer===null)return;var dropped=tabletOverBottle();tabletPointer=null;tabletDrag.classList.remove('dragging');tabletDrag.style.transform='';if(ev==='pointerup'&&dropped)insertTablet();});});
+/* Erlenmeyer bisa diseret ke atas piring neraca. */
+$('balSvg').innerHTML=balBase(80,'bt-read','0,0').replace('<rect x="30"','<rect id="balPan" x="30"');
+var fl=$('bottleSvg'),flP=null,flX=0,flY=0,flBX=0,flBY=0;
+function flPlace(on){
+  fl.style.transform='';
+  var f=fl.getBoundingClientRect(),p=$('balPan').getBoundingClientRect();
+  if(on){flBX=(p.left+p.width/2)-(f.left+f.width/2);flBY=p.top-f.bottom+2;}else{flBX=0;flBY=0;}
+  fl.style.transform='translate('+flBX+'px,'+flBY+'px)';bt.onPan=on;
+}
+fl.addEventListener('pointerdown',function(e){e.preventDefault();flP=e.pointerId;flX=e.clientX;flY=e.clientY;fl.setPointerCapture(flP);fl.classList.add('dragging');});
+fl.addEventListener('pointermove',function(e){if(flP!==e.pointerId)return;fl.style.transform='translate('+(flBX+e.clientX-flX)+'px,'+(flBY+e.clientY-flY)+'px)';});
+['pointerup','pointercancel'].forEach(function(ev){fl.addEventListener(ev,function(e){
+  if(flP!==e.pointerId)return;flP=null;fl.classList.remove('dragging');
+  var f=fl.getBoundingClientRect(),p=$('balPan').getBoundingClientRect(),cx=f.left+f.width/2;
+  var on=ev==='pointerup'&&cx>p.left-20&&cx<p.right+20&&f.bottom>p.top-40&&f.bottom<p.top+60;
+  flPlace(on);
+  btSay(on?'Erlenmeyer sudah berada di atas neraca. Massanya terbaca pada layar neraca.':'Erlenmeyer berada di luar neraca, jadi layar neraca menunjukkan 0,0 g. Seret Erlenmeyer ke piring neraca.');
+});});
+window.addEventListener('resize',function(){if(bt.onPan)flPlace(true);});
+function btTick(){
+  var ch=false;
+  if(bt.gasRem>0){
+    var p=Math.min(1,bt.gasRem);bt.gasRem-=p;
+    bt.gasIn+=p;
+    if(bt.gasRem===0){bt.react=false;}
+    ch=true;
+  }
+  if(!bt.open&&bt.gasIn>0&&bt.gasRem===0&&!bt.qOpen){
+    bt.qOpen=true;
+    var m=btMass();
+    bt.msg='Reaksi selesai dalam sistem tertutup. Gas CO₂ tetap berada di dalam Erlenmeyer, sehingga massa total tetap '+f1(m/10)+' g, sama seperti saat reaksi dimulai. Jawab pertanyaan di bawah.';
+    ch=true;
+  }
+  if(ch){btRender();}
+}
+setInterval(btTick,250);
+$('bt-reset').onclick=function(){
+  bt=btNew();flPlace(false);
+  $('bt-ans').value='';$('bt-err').textContent='';$('bt-fb').hidden=true;
+  $('tablet').setAttribute('class','');
+  btRender();
+};
+btRender();
+function evalPemantik(txt){
+  var t=txt.toLowerCase();
+  var a=/tertutup|tidak (ada )?(yang |zat )?(keluar|lepas|hilang)|terperangkap|terkurung|tetap (di|berada di) dalam|(tidak|belum) (bisa |dapat )?(keluar|lepas)|masih (di|berada di) dalam|di dalam (botol|erlenmeyer|wadah)/.test(t);
+  var b=/gas|co2|co₂|karbon dioksida/.test(t);
+  var c=/ikut (tertimbang|ditimbang|terhitung)|massa (total )?(tetap|sama|tidak berubah|kekal)|kekekalan|lavoisier|atom|massa gas/.test(t);
+  return a&&(b||c);
+}
+$('bt-check').onclick=function(){
+  var v=$('bt-ans').value.trim();
+  if(v.length<15){$('bt-err').textContent='Tulis jawabanmu dulu dengan satu atau dua kalimat.';return;}
+  $('bt-err').textContent='';
+  if(evalPemantik(v)){
+    say($('bt-fb'),'<b>Hebat, '+nm()+'!</b> Jawabanmu tepat. Karena Erlenmeyer tertutup, gas yang terbentuk tidak keluar dan massanya tetap ikut tertimbang. Jadi massa total sebelum dan sesudah reaksi sama.','ok');
+  }else{
+    say($('bt-fb'),'<b>Semangat, '+nm()+'!</b> Jawabanmu belum tepat, ayo coba lagi. Gas yang terbentuk tidak hilang. Karena Erlenmeyer tertutup, gas tetap berada di dalam Erlenmeyer dan massanya ikut tertimbang, sehingga massa total tidak berkurang. Hal ini sesuai Hukum Lavoisier: massa reaktan = massa produk.','warn');
+  }
+};
+
+/* ===== Simulasi neraca ===== */
+var SIMS=[
+ {tab:'1 · Padat',judul:'Simulasi 1 · Zat padat',flip:false,
+  skenario:'Serbuk besi dan serbuk belerang dipanaskan dalam tabung tertutup hingga terbentuk besi(II) sulfida.',
+  zat:[{n:'Besi',f:'Fe',w:'padat',m:14,r:'re'},{n:'Belerang',f:'S',w:'padat',m:8,r:'re'},{n:'Besi(II) sulfida',f:'FeS',w:'padat',m:22,r:'pr'}],
+  exp:'Seluruh reaktan berubah menjadi produk padat, atom-atom hanya tersusun ulang. Massa reaktan = massa produk = 22 g.'},
+ {tab:'2 · Padat + cair',judul:'Simulasi 2 · Zat padat dan cair',flip:true,
+  skenario:'Kalsium oksida (padat) dimasukkan ke dalam air (cair) di wadah tertutup hingga terbentuk kalsium hidroksida.',
+  zat:[{n:'Kalsium oksida',f:'CaO',w:'padat',m:28,r:'re'},{n:'Air',f:'H₂O',w:'cair',m:9,r:'re'},{n:'Kalsium hidroksida',f:'Ca(OH)₂',w:'padat',m:37,r:'pr'}],
+  exp:'Zat padat dan zat cair sama-sama ikut ditimbang. Massa reaktan = massa produk = 37 g.'},
+ {tab:'3 · Cair + gas',judul:'Simulasi 3 · Zat cair dan gas',flip:false,
+  skenario:'Hidrogen peroksida (cair) terurai di dalam wadah tertutup menjadi air dan gas oksigen.',
+  zat:[{n:'Hidrogen peroksida',f:'H₂O₂',w:'cair',m:34,r:'re'},{n:'Air',f:'H₂O',w:'cair',m:18,r:'pr'},{n:'Oksigen',f:'O₂',w:'gas',m:16,r:'pr'}],
+  exp:'Gas oksigen tetap berada di dalam wadah tertutup sehingga ikut ditimbang. Massa produk (cair dan gas) sama dengan massa reaktan, yaitu 34 g.'}
+];
+var done=[false,false,false],cur=0;
+function sum(a){return a.reduce(function(s,z){return s+z.m;},0);}
+function blocks(items){return items.map(function(z){return '<div class="blk '+z.w+'"><b>'+z.f+'</b><small>'+z.w+'</small><span>'+fi(z.m)+' g</span></div>';}).join('');}
+var FP='M50 30H70V68L108 134Q114 148 100 148H20Q6 148 12 134L50 68Z';
+function balBase(py,tid,txt){
+  var tx=tid?' id="'+tid+'"':'',ff=' font-family="ui-monospace,Consolas,monospace" fill="#6ff0c4"';
+  return '<rect x="30" y="'+py+'" width="150" height="8" rx="4" fill="#9fb0bf" stroke="var(--mut)"/><rect x="97" y="'+(py+8)+'" width="16" height="5" fill="var(--mut)"/><rect x="6" y="'+(py+13)+'" width="198" height="38" rx="9" fill="#dfe6ec" stroke="var(--mut)" stroke-width="1.5"/><rect x="40" y="'+(py+19)+'" width="130" height="26" rx="4" fill="#10211f"/><text'+tx+' x="150" y="'+(py+38)+'" text-anchor="end" font-size="17" font-weight="700"'+ff+'>'+txt+'</text><text x="155" y="'+(py+38)+'" font-size="12"'+ff+'>g</text>';
+}
+function flaskInner(items,nocap){
+  var h='',has=function(w){return items.some(function(z){return z.w===w&&z.m>0;});};
+  if(has('cair'))h+='<path d="M26 110H94L108 134Q114 148 100 148H20Q6 148 12 134Z" fill="#4f9fd0" opacity=".65"/>';
+  if(has('padat'))h+='<path d="M28 148Q40 128 60 130Q82 128 94 148Z" fill="#a89478"/>';
+  if(has('gas'))h+='<g fill="var(--gas-bg)" stroke="var(--gas-t)" stroke-dasharray="3 2"><circle cx="50" cy="100" r="8"/><circle cx="72" cy="112" r="10"/><circle cx="60" cy="86" r="6"/></g>';
+  return h+'<path d="'+FP+'" fill="rgba(170,205,222,.2)" stroke="var(--mut)" stroke-width="2.5"/>'+(nocap?'':'<rect x="46" y="18" width="28" height="13" rx="3" fill="#111"/>');
+}
+function balSvg(items){return '<svg class="balance-art" viewBox="0 0 210 190" role="img" aria-label="Neraca digital dengan Erlenmeyer bertutup"><g transform="translate(51 0) scale(.9)">'+flaskInner(items)+'</g>'+balBase(135,'',f1(sum(items)))+'</svg>';}
+function scaleHtml(label,items,selId){
+  var art=balSvg(items);
+  return '<div class="scale"><div class="stitle">Neraca '+label+'</div>'+art+'<div class="pan">'+blocks(items)+'</div><label style="text-align:left">Pilih keterangan neraca</label><select id="'+selId+'"><option value="">Pilih</option><option value="sebelum">Massa sebelum reaksi</option><option value="sesudah">Massa sesudah reaksi</option></select></div>';
+}
+function labHtml(i){
+  var s=SIMS[i],p='s'+i+'-',re=s.zat.filter(function(z){return z.r==='re';});
+  return '<div class="step"><h4>Percobaan · Timbang zat dan jalankan reaksi</h4><p class="small">Seret Erlenmeyer ke piring neraca. Lalu seret (atau ketuk) tiap zat ke mulut Erlenmeyer, tutup, dan mulai reaksi. Neraca sudah ditara, jadi Erlenmeyer kosong terbaca 0,0 g.</p><div class="lab-stage"><svg class="lab-bal" id="'+p+'bal" viewBox="0 0 210 135" role="img" aria-label="Neraca digital"></svg><svg class="lab-fl" id="'+p+'fl" viewBox="0 0 120 150" role="img" aria-label="Erlenmeyer bertutup hitam"><g id="'+p+'fc"></g><g id="'+p+'cap"><rect x="46" y="18" width="28" height="13" rx="3" fill="#111"/></g></svg></div><div class="wts" id="'+p+'ing">'+re.map(function(z,j){return '<div class="opt ing" data-j="'+j+'">'+z.n+' ('+z.f+') · '+fi(z.m)+' g</div>';}).join('')+'</div><div class="note" id="'+p+'msg"></div><button class="btn" id="'+p+'go">Tutup dan mulai reaksi</button><button class="btn sec" id="'+p+'rs">Ulangi</button></div>';
+}
+function bindLab(i){
+  var s=SIMS[i],p='s'+i+'-',re=s.zat.filter(function(z){return z.r==='re';}),pr=s.zat.filter(function(z){return z.r==='pr';});
+  var fl=$(p+'fl'),L,bx=0,by=0,fp=null,fx=0,fy=0;
+  $(p+'bal').innerHTML=balBase(80,p+'rd','0,0').replace('<rect x="30"','<rect id="'+p+'pan" x="30"');
+  function msg(t){$(p+'msg').textContent=t;}
+  function render(){
+    var it=L.done?pr:L.add.map(function(j){return re[j];});
+    $(p+'fc').innerHTML=flaskInner(it,true);
+    $(p+'cap').style.transform=L.open?'translate(52px,-14px) rotate(20deg)':'none';
+    $(p+'rd').textContent=L.on?f1(sum(it)):f1(0);
+    Array.prototype.forEach.call($(p+'ing').children,function(c){c.classList.toggle('used',L.add.indexOf(+c.getAttribute('data-j'))>=0);});
+  }
+  function place(on){
+    fl.style.transform='';
+    var f=fl.getBoundingClientRect(),q=$(p+'pan').getBoundingClientRect();
+    if(on){bx=(q.left+q.width/2)-(f.left+f.width/2);by=q.top-f.bottom+2;}else{bx=0;by=0;}
+    fl.style.transform='translate('+bx+'px,'+by+'px)';L.on=on;render();
+  }
+  function reset(){L={on:false,open:true,add:[],done:false,busy:false};place(false);msg('Erlenmeyer masih di luar neraca. Seret ke piring neraca, lalu masukkan zat-zatnya.');}
+  fl.addEventListener('pointerdown',function(e){e.preventDefault();fp=e.pointerId;fx=e.clientX;fy=e.clientY;fl.setPointerCapture(fp);fl.classList.add('dragging');});
+  fl.addEventListener('pointermove',function(e){if(fp!==e.pointerId)return;fl.style.transform='translate('+(bx+e.clientX-fx)+'px,'+(by+e.clientY-fy)+'px)';});
+  ['pointerup','pointercancel'].forEach(function(ev){fl.addEventListener(ev,function(e){
+    if(fp!==e.pointerId)return;fp=null;fl.classList.remove('dragging');
+    var f=fl.getBoundingClientRect(),q=$(p+'pan').getBoundingClientRect(),cx=f.left+f.width/2;
+    var on=ev==='pointerup'&&cx>q.left-20&&cx<q.right+20&&f.bottom>q.top-40&&f.bottom<q.top+60;
+    place(on);msg(on?'Erlenmeyer di atas neraca. Sekarang masukkan zat-zatnya.':'Erlenmeyer di luar neraca, layar menunjukkan 0,0 g.');
+  });});
+  Array.prototype.forEach.call($(p+'ing').children,function(c){
+    var pid=null,sx=0,sy=0,mv=false;
+    function add(){
+      if(L.done||L.busy){msg('Reaksi sudah berjalan. Tekan Ulangi untuk mencoba lagi.');return;}
+      if(!L.on){msg('Letakkan Erlenmeyer di atas neraca dulu.');return;}
+      var j=+c.getAttribute('data-j');L.add.push(j);render();
+      msg(L.add.length<re.length?re[j].n+' dimasukkan. Massa di layar bertambah. Masukkan zat berikutnya.':'Semua zat sudah masuk. Tekan "Tutup dan mulai reaksi".');
+    }
+    c.addEventListener('pointerdown',function(e){e.preventDefault();pid=e.pointerId;sx=e.clientX;sy=e.clientY;mv=false;c.setPointerCapture(pid);c.classList.add('dragging');});
+    c.addEventListener('pointermove',function(e){if(pid!==e.pointerId)return;var dx=e.clientX-sx,dy=e.clientY-sy;if(Math.abs(dx)+Math.abs(dy)>6)mv=true;c.style.transform='translate('+dx+'px,'+dy+'px)';});
+    ['pointerup','pointercancel'].forEach(function(ev){c.addEventListener(ev,function(e){
+      if(pid!==e.pointerId)return;pid=null;
+      var r=c.getBoundingClientRect(),f=fl.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
+      var over=cx>f.left-10&&cx<f.right+10&&cy>f.top-40&&cy<f.bottom;
+      c.classList.remove('dragging');c.style.transform='';
+      if(ev==='pointerup'&&(!mv||over))add();
+    });});
+  });
+  $(p+'go').onclick=function(){
+    if(L.done||L.busy)return;
+    if(!L.on){msg('Letakkan Erlenmeyer di atas neraca dulu.');return;}
+    if(L.add.length<re.length){msg('Masukkan semua zat reaktan dulu.');return;}
+    L.open=false;L.busy=true;render();
+    msg('Erlenmeyer ditutup. Reaksi berlangsung dan tutup tetap terpasang, jadi tidak ada zat yang keluar.');
+    setTimeout(function(){L.done=true;L.busy=false;render();msg('Reaksi selesai. Massa sebelum reaksi '+f1(sum(re))+' g, massa sesudah reaksi '+f1(sum(pr))+' g, angka di layar tidak berubah. Lanjutkan ke Langkah 1.');},1400);
+  };
+  $(p+'rs').onclick=reset;
+  window.addEventListener('resize',function(){if(L.on&&fl.getBoundingClientRect().width)place(true);});
+  reset();
+}
+function buildSim(i){
+  var s=SIMS[i],p='s'+i+'-',h='';
+  var re=s.zat.filter(function(z){return z.r==='re';}),pr=s.zat.filter(function(z){return z.r==='pr';});
+  var A=s.flip?re:pr,B=s.flip?pr:re;
+  h+='<h3>'+s.judul+'</h3><p>'+s.skenario+'</p>'+labHtml(i);
+  h+='<div class="step"><h4>Langkah 1 · Tentukan reaktan dan produk</h4><div class="tw"><table><tr><th>Zat</th><th>Wujud</th><th>Sebagai</th></tr>';
+  s.zat.forEach(function(z,j){h+='<tr><td>'+z.n+' ('+z.f+')</td><td>'+chip(z.w)+'</td><td><select id="'+p+'sel'+j+'"><option value="">Pilih</option><option value="re">Reaktan</option><option value="pr">Produk</option></select></td></tr>';});
+  h+='</table></div><div class="err" id="'+p+'e1"></div><button class="btn" id="'+p+'b1">Periksa tabel</button><div class="fb" id="'+p+'f1" hidden></div></div>';
+  h+='<div class="step" id="'+p+'st2" hidden><h4>Langkah 2 · Baca neraca</h4><p class="small">Semua zat, apa pun wujudnya, ikut ditimbang. Tentukan neraca mana yang menunjukkan massa sebelum dan sesudah reaksi.</p><div class="scales">'+scaleHtml('A',A,p+'selA')+scaleHtml('B',B,p+'selB')+'</div><div class="err" id="'+p+'e2"></div><button class="btn" id="'+p+'b2">Periksa neraca</button><div class="fb" id="'+p+'f2" hidden></div></div>';
+  h+='<div class="step" id="'+p+'st3" hidden><h4>Langkah 3 · Bandingkan dan jelaskan</h4><p>Massa sebelum reaksi: <b>'+f1(sum(re))+' g</b> · Massa sesudah reaksi: <b>'+f1(sum(pr))+' g</b></p><div class="cmp" id="'+p+'cmp"><button class="opt" data-v="gt">Sebelum &gt; sesudah</button><button class="opt" data-v="eq">Sebelum = sesudah</button><button class="opt" data-v="lt">Sebelum &lt; sesudah</button></div><textarea id="'+p+'txt" rows="3" placeholder="Jelaskan secara singkat apa yang kamu temukan..."></textarea><div class="err" id="'+p+'e3"></div><button class="btn" id="'+p+'b3">Periksa jawaban</button><div class="fb" id="'+p+'f3" hidden></div></div>';
+  return h;
+}
+function bindSim(i){
+  var s=SIMS[i],p='s'+i+'-',cmp=null;
+  $(p+'b1').onclick=function(){
+    var all=true,ok=true;
+    s.zat.forEach(function(z,j){var v=$(p+'sel'+j).value;if(!v){all=false;}else if(v!==z.r){ok=false;}});
+    if(!all){$(p+'e1').textContent='Pilih jawaban untuk semua zat dulu.';return;}
+    $(p+'e1').textContent='';
+    if(ok){say($(p+'f1'),'<b>Tepat, '+nm()+'!</b> Reaktan adalah zat awal sebelum reaksi, produk adalah zat yang terbentuk.','ok');$(p+'st2').hidden=false;}
+    else{say($(p+'f1'),'<b>Semangat, '+nm()+'!</b> Belum tepat. Reaktan adalah zat yang ada di awal dan habis bereaksi, sedangkan produk adalah zat baru yang terbentuk. Coba periksa lagi.','warn');}
+  };
+  $(p+'b2').onclick=function(){
+    var a=$(p+'selA').value,b=$(p+'selB').value;
+    if(!a||!b){$(p+'e2').textContent='Pilih keterangan untuk kedua neraca dulu.';return;}
+    $(p+'e2').textContent='';
+    var ea=s.flip?'sebelum':'sesudah',eb=s.flip?'sesudah':'sebelum';
+    if(a===ea&&b===eb){say($(p+'f2'),'<b>Hebat, '+nm()+'!</b> Neraca yang berisi reaktan menunjukkan massa sebelum reaksi, dan yang berisi produk menunjukkan massa sesudah reaksi.','ok');$(p+'st3').hidden=false;}
+    else{say($(p+'f2'),'<b>Semangat, '+nm()+'!</b> Belum tepat. Massa sebelum reaksi adalah massa semua reaktan, sedangkan massa sesudah reaksi adalah massa semua produk. Lihat lagi zat pada tiap neraca.','warn');}
+  };
+  var opts=$(p+'cmp').querySelectorAll('.opt');
+  Array.prototype.forEach.call(opts,function(b){b.onclick=function(){cmp=b.getAttribute('data-v');Array.prototype.forEach.call(opts,function(x){x.classList.toggle('on',x===b);});};});
+  $(p+'b3').onclick=function(){
+    var t=$(p+'txt').value.trim();
+    if(!cmp){$(p+'e3').textContent='Pilih salah satu perbandingan dulu.';return;}
+    if(t.length<10){$(p+'e3').textContent='Tulis penjelasan singkatmu dulu.';return;}
+    $(p+'e3').textContent='';
+    var okC=cmp==='eq',okT=/sama|tetap|kekal|tidak (berubah|hilang|bertambah|berkurang)|seimbang|setara|konstan/.test(t.toLowerCase());
+    if(okC&&okT){
+      say($(p+'f3'),'<b>Luar biasa, '+nm()+'!</b> Kesimpulanmu benar. '+s.exp,'ok');
+      done[i]=true;updateTabs();
+    }else if(okC){
+      say($(p+'f3'),'<b>Semangat, '+nm()+'!</b> Perbandinganmu sudah benar, tetapi penjelasanmu belum menyebut bahwa massanya sama atau tetap. Coba tulis lagi. '+s.exp,'warn');
+    }else{
+      say($(p+'f3'),'<b>Semangat, '+nm()+'!</b> Belum tepat, coba hitung lagi. '+s.exp,'warn');
+    }
+  };
+}
+function updateTabs(){
+  var tabs=$('simtabs').children;
+  for(var i=0;i<tabs.length;i++){tabs[i].textContent=SIMS[i].tab+(done[i]?' ✓':'');tabs[i].className='tab'+(i===cur?' on':'');}
+  if(done[0]&&done[1]&&done[2]){say($('sim-done'),'<b>Selamat, '+nm()+'!</b> Kamu sudah menyelesaikan ketiga simulasi. Massa zat padat, cair, dan gas semuanya ikut dihitung, dan massa sebelum selalu sama dengan massa sesudah reaksi. Lanjut ke game neraca!','ok');}
+}
+function showSim(i){
+  cur=i;
+  for(var k=0;k<3;k++){$('sim-'+k).hidden=(k!==i);}
+  updateTabs();
+}
+(function initSims(){
+  var tabs='',panels='';
+  SIMS.forEach(function(s,i){
+    tabs+='<button class="tab" data-i="'+i+'">'+s.tab+'</button>';
+    panels+='<div id="sim-'+i+'" hidden>'+buildSim(i)+'</div>';
+  });
+  $('simtabs').innerHTML=tabs;$('simpanels').innerHTML=panels;
+  Array.prototype.forEach.call($('simtabs').children,function(b){b.onclick=function(){showSim(+b.getAttribute('data-i'));};});
+  SIMS.forEach(function(s,i){bindSim(i);bindLab(i);});
+  showSim(0);
+})();
+
+/* ===== Game neraca ===== */
+var ROUNDS=[
+ {ket:'Level 1 · Padat. Besi dan belerang bereaksi membentuk besi(II) sulfida di wadah tertutup.',L:[{f:'Fe',w:'padat',m:14},{f:'S',w:'padat',m:8}],R:[],u:'R',un:{f:'FeS',w:'padat'},ans:22,ok:'Massa reaktan 22 g sama dengan massa produk 22 g.'},
+ {ket:'Level 2 · Padat dan cair. Kalsium oksida bereaksi dengan air membentuk kalsium hidroksida di wadah tertutup.',L:[{f:'CaO',w:'padat',m:28},{f:'H₂O',w:'cair',m:9}],R:[],u:'R',un:{f:'Ca(OH)₂',w:'padat'},ans:37,ok:'Zat padat dan cair sama-sama ikut ditimbang, hasilnya 37 g di kedua sisi.'},
+ {ket:'Level 3 · Cair menjadi cair dan gas. Hidrogen peroksida terurai menjadi air dan gas oksigen di wadah tertutup.',L:[{f:'H₂O₂',w:'cair',m:34}],R:[{f:'H₂O',w:'cair',m:18}],u:'R',un:{f:'O₂',w:'gas'},ans:16,ok:'Gas oksigen ikut ditimbang. Massa produk 18 g + 16 g sama dengan massa reaktan 34 g.'},
+ {ket:'Level 4 · Padat dan gas. Karbon dibakar dalam wadah tertutup berisi gas oksigen dan menghasilkan gas karbon dioksida.',L:[{f:'C',w:'padat',m:12},{f:'O₂',w:'gas',m:32}],R:[],u:'R',un:{f:'CO₂',w:'gas'},ans:44,ok:'Gas yang terbentuk tetap berada di wadah, jadi massanya 44 g sama dengan massa reaktan.'},
+ {ket:'Level 5 · Mencari reaktan. Magnesium terbakar dalam gas oksigen 16 g dan menghasilkan 40 g magnesium oksida. Berapa massa magnesium yang bereaksi?',L:[{f:'O₂',w:'gas',m:16}],R:[{f:'MgO',w:'padat',m:40}],u:'L',un:{f:'Mg',w:'padat'},ans:24,ok:'Massa reaktan harus sama dengan massa produk 40 g, jadi magnesium yang bereaksi adalah 24 g.'}
+];
+var WEIGHTS=[1,2,5,10,20];
+var g={r:0,add:[],solved:false,ang:0,target:0,raf:null};
+function gAdded(){return g.add.reduce(function(s,x){return s+x;},0);}
+function gTotals(){
+  var R=ROUNDS[g.r],L=sum(R.L),Rt=sum(R.R),a=gAdded();
+  if(R.u==='L'){L+=a;}else{Rt+=a;}
+  return {L:L,R:Rt};
+}
+function gRender(){
+  var R=ROUNDS[g.r],t=gTotals(),a=gAdded();
+  $('g-prog').textContent='Level '+(g.r+1)+' dari '+ROUNDS.length;
+  $('g-ket').textContent=R.ket;
+  var unk='<div class="blk unk"><b>'+R.un.f+'</b><small>'+R.un.w+'</small><span>'+(a>0?fi(a):'?')+' g</span></div>';
+  function side(k,isU){var it=k.slice();if(isU&&a>0){it.push({f:R.un.f,w:R.un.w,m:a});}return balSvg(it)+'<div class="pan">'+blocks(k)+(isU?unk:'')+'</div>';}
+  $('g-L').innerHTML=side(R.L,R.u==='L');$('g-R').innerHTML=side(R.R,R.u==='R');
+  $('g-add').innerHTML='Massa yang kamu tambahkan ke Erlenmeyer di sisi '+(R.u==='L'?'kiri':'kanan')+': <b>'+(g.add.length?g.add.join(' + ')+' = '+fi(a)+' g':'belum ada')+'</b>';
+}
+(function initWts(){
+  var h='';WEIGHTS.forEach(function(w){h+='<button class="opt" data-w="'+w+'">+'+w+' g</button>';});
+  $('g-wts').innerHTML=h;
+  Array.prototype.forEach.call($('g-wts').children,function(b){b.onclick=function(){
+    if(g.solved){return;}
+    if(g.add.length>=14){$('g-err').textContent='Tambahan terlalu banyak. Hapus beberapa dulu.';return;}
+    $('g-err').textContent='';g.add.push(+b.getAttribute('data-w'));gRender();
+  };});
+})();
+$('g-undo').onclick=function(){if(g.solved){return;}g.add.pop();$('g-err').textContent='';gRender();};
+$('g-clear').onclick=function(){if(g.solved){return;}g.add=[];$('g-err').textContent='';gRender();};
+$('g-check').onclick=function(){
+  if(g.solved){return;}
+  if(!g.add.length){$('g-err').textContent='Tambahkan massa dulu ke Erlenmeyer yang bertanda tanya.';return;}
+  $('g-err').textContent='';
+  var t=gTotals(),R=ROUNDS[g.r];
+  if(Math.abs(t.L-t.R)<1e-9){
+    g.solved=true;
+    var last=g.r===ROUNDS.length-1;
+    say($('g-fb'),'<b>Hebat, '+nm()+'!</b> Angka kedua neraca sama. '+R.ok+(last?' Kamu berhasil menyelesaikan semua level. Selamat, kamu sudah memahami Hukum Lavoisier!':''),'ok');
+    $('g-next').hidden=false;
+    $('g-next').textContent=last?'Main lagi dari awal':'Level berikutnya';
+  }else{
+    var lighter=t.R<t.L?(R.u==='R'?'kanan':'kanan'):'kiri';
+    say($('g-fb'),'<b>Semangat, '+nm()+'!</b> Angka kedua neraca belum sama, massa di sisi '+lighter+' masih lebih kecil. Ingat: massa reaktan = massa produk, dan semua wujud zat (padat, cair, gas) ikut dihitung. Coba atur tambahan massamu lagi.','warn');
+  }
+};
+$('g-next').onclick=function(){
+  if(g.r===ROUNDS.length-1){g.r=0;}else{g.r++;}
+  g.add=[];g.solved=false;$('g-next').hidden=true;$('g-fb').hidden=true;$('g-err').textContent='';gRender();
+};
+gRender();
+
+/* Setiap bagian pembelajaran ditampilkan sebagai satu slide. */
+var slideSections=Array.prototype.slice.call(document.querySelectorAll('#isi > section.card'));
+var slideIndex=0;
+slideSections.forEach(function(sec){sec.classList.add('slide-card');sec.hidden=true;});
+function showSlide(i){
+  if(!slideSections.length)return;
+  slideIndex=Math.max(0,Math.min(i,slideSections.length-1));
+  slideSections.forEach(function(sec,j){sec.hidden=j!==slideIndex;});
+  $('slide-count').textContent='Slide '+(slideIndex+1)+' dari '+slideSections.length+' · '+(slideSections[slideIndex].querySelector('h2')||{}).textContent;
+  $('slide-prev').disabled=slideIndex===0;
+  $('slide-next').textContent=slideIndex===slideSections.length-1?'Selesai':'Berikutnya →';
+  $('slide-next').disabled=false;
+  $('slide-nav').scrollIntoView({behavior:'smooth',block:'start'});
+}
+$('slide-prev').onclick=function(){showSlide(slideIndex-1);};
+$('slide-next').onclick=function(){if(slideIndex<slideSections.length-1)showSlide(slideIndex+1);else $('slide-count').textContent='Semua slide selesai · '+slideSections.length+' bagian';};
+showSlide(0);
+})();
+</script>
+</body>
+</html>
